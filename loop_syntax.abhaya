@@ -1,0 +1,32 @@
+// Abhaya Programming Language - Loop Syntax Examples
+
+// Array of fruits for demonstration
+samman gar phalHaru = ["syau", "aam", "litchi", "kera", "suntala"];
+
+// 1. Traditional C-style for loop with delay
+chapde("1. Traditional for loop with 1-second delay:");
+tesko-lagi (dekha i = 0; i < 3; i++) {
+  chapde(phalHaru[i]);
+  rukha(1);
+}
+
+// 2. While loop with delay
+chapde("\n2. While loop with 1-second delay:");
+samman gar j = 0;
+jaba-samma (j < 3) {
+  chapde(phalHaru[j]);
+  j = j + 1;
+  rukha(1);
+}
+
+// Demonstration of the rukha() function for delay
+chapde("\nDemonstrating 1-second delay sequence:");
+chapde("Starting");
+rukha(1);
+chapde("1 second passed");
+rukha(1);
+chapde("2 seconds passed");
+rukha(1);
+chapde("3 seconds passed");
+
+chapde("\nLoop syntax examples completed!");

@@ -1,0 +1,48 @@
+// Namaste Sansar (Hello World)
+chapde("Nepali Bhasa");
+
+// Variable ra dataTypes
+karan gar naam = "Abhaya"; // string
+samman gar umar = 17;      // number
+karan gar bikasMa = true;   // boolean
+karan gar anka = null;      // null
+karan gar thalab;           // undefined
+karan gar sipHaru = ["JS", "React", "Tailwind"]; // array
+
+// Functions 
+karya ho namaste(naam) {
+  niske "Namaste " + naam;
+}
+
+samman gar namasteArrow = (naam) => `Namaste ${naam}`;
+
+
+// Loop
+samman gar phalHaru = ["syau", "aam", "litchi"];
+tesko-lagi (dekha i = 0; i < phalHaru.length; i++) {
+  chapde(phalHaru[i]);
+}
+
+// forEach loop (advanced feature)
+// phalHaru.forEach(phal => chapde(phal));
+
+// Conditional Statements
+karan gar tapkram = 30;
+yedi (tapkram > 25) {
+  chapde("Taato");
+} tara yedi (tapkram > 15) {
+  chapde("Nyano");
+} tara {
+  chapde("Chiso");
+}
+
+
+// Objects & Destructuring
+karan gar prayogkarta = { naam: "Abhaya", umar: 17, bhumika: "Web Bikas" };
+karan gar { naam, umar } = prayogkarta;
+chapde(naam); // Abhaya
+
+
+// Modern Features
+karan gar prayogkarta = { naam: "Abhaya", umar: null };
+chapde(prayogkarta?.naam ?? "Pauna"); // Abhaya
