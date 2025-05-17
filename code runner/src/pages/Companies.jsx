@@ -4,7 +4,7 @@ import { FaCode, FaLaptopCode, FaRocket, FaBuilding, FaUsers, FaChartLine, FaLig
 function CompaniesPage() {
   const companies = [
     {
-      name: "Abhaya Infoys Digital Yak Labs",
+      name: " Digital Yak Labs",
       description: "Leading digital innovation and technology solutions",
       icon: FaCode,
       details: "A pioneering technology company focused on digital transformation and innovative solutions. We specialize in cutting-edge software development, AI integration, and digital infrastructure.",
@@ -45,6 +45,17 @@ function CompaniesPage() {
         "Multiple business verticals",
         "Strategic partnerships",
         "Market leadership"
+      ]
+    },
+    {
+      name: "Abhaya Infoys",
+      description: "Innovative software solutions and IT services",
+      icon: FaCode,
+      details: "A leading provider of innovative software solutions and IT services, dedicated to helping businesses thrive in the digital age.",
+      achievements: [
+        "Award-winning software solutions",
+        "Expert IT consulting",
+        "Global client base"
       ]
     }
   ];

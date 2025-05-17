@@ -111,12 +111,25 @@ export default function RunnerPage() {
   const [output, setOutput] = useState([
     { type: "comment", content: "//This function made by Abhaya bikram shahi and so enjoy the complier and feel profesional with nepali coding language .. Namaskar" },
   ]);
-  const [fileName, setFileName] = useState(".abhaya");
+  const [fileName, setFileName] = useState("main");
+  const [fileExtension, setFileExtension] = useState(".abhaya");
   const [isLoading, setIsLoading] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
+  const [selection, setSelection] = useState({ start: 0, end: 0 });
 
   const handleRun = async () => {
     if (isRunning) return; // Prevent multiple runs
+    
+    // Check for empty code
+    if (!code.trim()) {
+      setOutput([{ 
+        type: "error", 
+        content: "फुच्रो कोड लेख्नुहोस्! (Please write some code!)" 
+      }]);
+      return;
+    }
+
     setIsRunning(true);
     setIsLoading(true);
     try {
@@ -164,31 +177,113 @@ export default function RunnerPage() {
 
       const newCode = code.substring(0, start) + newText + code.substring(end);
       setCode(newCode);
+      
+      // Maintain selection after commenting/uncommenting
+      setTimeout(() => {
+        textarea.selectionStart = start;
+        textarea.selectionEnd = start + newText.length;
+      }, 0);
+    }
+
+    // Handle Tab key
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const textarea = e.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      // If there's a selection, indent all selected lines
+      if (start !== end) {
+        const selectedText = code.substring(start, end);
+        const lines = selectedText.split('\n');
+        const newText = lines.map(line => '  ' + line).join('\n');
+        const newCode = code.substring(0, start) + newText + code.substring(end);
+        setCode(newCode);
+        
+        // Maintain selection after indentation
+        setTimeout(() => {
+          textarea.selectionStart = start;
+          textarea.selectionEnd = start + newText.length;
+        }, 0);
+      } else {
+        // Single tab insertion
+        const newCode = code.substring(0, start) + '  ' + code.substring(end);
+        setCode(newCode);
+        
+        // Move cursor after the inserted tab
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+        }, 0);
+      }
+    }
+
+    // Handle Enter key for proper indentation
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const textarea = e.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      // Get the current line's indentation
+      const currentLine = code.substring(0, start).split('\n').pop();
+      const indentMatch = currentLine.match(/^(\s*)/);
+      const currentIndent = indentMatch ? indentMatch[1] : '';
+      
+      // Add new line with same indentation
+      const newCode = code.substring(0, start) + '\n' + currentIndent + code.substring(end);
+      setCode(newCode);
+      
+      // Move cursor to the new line with proper indentation
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + 1 + currentIndent.length;
+      }, 0);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 max-w-full font-sans flex flex-col">
       <header className="flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm">
-        <h1 className="text-3xl font-bold text-blue-800 mb-4 md:mb-0">Abhaya Runner</h1>
+        <div className="flex items-center gap-4 mb-4 md:mb-0">
+          <div className="flex items-center">
+            <svg className="w-8 h-8 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <h1 className="text-3xl font-bold text-blue-800 ml-2">Abhaya Runner</h1>
+          </div>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
           <div className="flex gap-2 items-center">
-            <input
-              type="text"
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Filename"
-            />
+            <div className="flex items-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden">
+              <input
+                type="text"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                className="px-3 py-2 focus:outline-none bg-transparent"
+                placeholder="Filename"
+              />
+              <div className="flex items-center border-l border-gray-200">
+                <button
+                  onClick={() => setFileExtension(".abhaya")}
+                  className="px-3 py-2 text-sm font-medium bg-blue-600 text-white"
+                >
+                  .abhaya
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3">
             <button
               onClick={handleRun}
               disabled={isLoading}
-              className={`bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0 flex items-center gap-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0 flex items-center gap-2 transition-all duration-200 ${
+                isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'
+              }`}
             >
               {isLoading ? (
                 <>
@@ -199,13 +294,21 @@ export default function RunnerPage() {
                   Running...
                 </>
               ) : (
-                'Run'
+                <>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 3L19 12L5 21V3Z" fill="currentColor"/>
+                  </svg>
+                  Run
+                </>
               )}
             </button>
             <button
               onClick={handleClear}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0 flex items-center gap-2 transition-all duration-200 hover:shadow-lg"
             >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               Clear
             </button>
           </div>
@@ -216,7 +319,7 @@ export default function RunnerPage() {
         <div className="flex-1 flex flex-col">
           <div className="bg-gray-800 text-white p-2 rounded-t-md font-medium flex justify-between items-center">
             <span>Code Editor</span>
-            <span className="text-xs text-gray-400">{fileName}</span>
+            <span className="text-xs text-gray-400">{fileName}{fileExtension}</span>
           </div>
           <div className="flex-grow relative">
             <SyntaxHighlighter
@@ -267,8 +370,31 @@ export default function RunnerPage() {
               className="absolute inset-0 w-full h-full resize-none font-mono"
               spellCheck={false}
               value={code}
-              onChange={(e) => setCode(e.target.value)}
+              onChange={(e) => {
+                setCode(e.target.value);
+                // Update cursor position on change
+                const textarea = e.target;
+                const cursorPosition = textarea.selectionStart;
+                const textBeforeCursor = e.target.value.substring(0, cursorPosition);
+                const lines = textBeforeCursor.split('\n');
+                const line = lines.length;
+                const column = lines[lines.length - 1].length + 1;
+                setCursorPosition({ line, column });
+              }}
               onKeyDown={handleKeyDown}
+              onSelect={(e) => {
+                const textarea = e.target;
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                setSelection({ start, end });
+                
+                // Update cursor position
+                const textBeforeCursor = code.substring(0, start);
+                const lines = textBeforeCursor.split('\n');
+                const line = lines.length;
+                const column = lines[lines.length - 1].length + 1;
+                setCursorPosition({ line, column });
+              }}
               placeholder="Write your Abhaya code here..."
               style={{
                 position: 'absolute',
@@ -289,9 +415,19 @@ export default function RunnerPage() {
                 zIndex: 2,
                 tabSize: 2,
                 whiteSpace: 'pre',
-                overflow: 'auto'
+                overflow: 'auto',
+                caretShape: 'block',
+                caretWidth: '2px'
               }}
             />
+            <div className="absolute bottom-2 right-2 text-xs text-gray-500 bg-gray-800/50 px-2 py-1 rounded flex items-center gap-2">
+              <span>Line {cursorPosition.line}, Column {cursorPosition.column}</span>
+              {selection.start !== selection.end && (
+                <span className="text-blue-400">
+                  ({selection.end - selection.start} chars selected)
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
