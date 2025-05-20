@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // Mock Abhaya language functionality (for demonstration in a web-only environment)
 const mockAbhayaOutput = (code) => {
@@ -14,7 +12,7 @@ const mockAbhayaOutput = (code) => {
   const mockFunction = (name, body) => {
     // Very basic function simulation
     if (name === 'bana') {
-      //  mock execution of the function body
+      // mock execution of the function body
       const bodyLines = body.trim().split('\n');
       bodyLines.forEach(line => {
         if (line.includes('chapde')) {
@@ -84,13 +82,15 @@ const mockAbhayaOutput = (code) => {
 
 // Mock highlighting
 const abhayaHighlightLanguage = (code) => {
-  //  basic keyword highlighting
-  const keywords = ['from bana', 'phirta', 'garna parxa', 'natra', 'ghar ja', 'chapde', 'rukha'];
+  // basic keyword highlighting
+  const keywords = ['from bana', 'phirta', 'garna parxa', 'natra', 'ghar ja', 'chapde', 'rukha', 'herda'];
   let highlightedCode = code;
   keywords.forEach(keyword => {
     const regex = new RegExp(`\\b${keyword.replace(/ /g, '\\s+')}\\b`, 'g');
     highlightedCode = highlightedCode.replace(regex, `<span style="color:#569CD6">${keyword}</span>`);
   });
+  // Highlight comments
+  highlightedCode = highlightedCode.replace(/(\/\/.*)/g, `<span style="color:#6b7280;font-style:italic">$1</span>`);
   return highlightedCode;
 };
 
@@ -322,50 +322,33 @@ export default function RunnerPage() {
             <span className="text-xs text-gray-400">{fileName}{fileExtension}</span>
           </div>
           <div className="flex-grow relative">
-            <SyntaxHighlighter
-              language="javascript"
-              style={vscDarkPlus}
-              customStyle={{
+            <pre
+              style={{
                 margin: 0,
-                padding: '1rem',
+                padding: '1rem 1rem 1rem 4.5rem',
                 height: '100%',
                 minHeight: '500px',
                 borderRadius: '0 0 0.375rem 0.375rem',
                 fontSize: '0.9rem',
                 overflow: 'auto',
                 backgroundColor: '#1E1E1E',
+                color: '#D4D4D4',
                 position: 'relative',
                 zIndex: 1,
                 fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-                lineHeight: '1.5'
-              }}
-              wrapLines={true}
-              showLineNumbers={true}
-              lineNumberStyle={{
-                color: '#858585',
-                marginRight: '1rem',
-                userSelect: 'none',
-                minWidth: '3em',
-                textAlign: 'right'
-              }}
-              lineProps={lineData => {
-                const line = String(lineData || '');
-                for (const keyword of ['from bana', 'phirta', 'garna parxa', 'natra', 'ghar ja', 'chapde', 'rukha', 'herda']) {
-                  if (line.includes(keyword)) {
-                    return { style: { display: 'block', color: '#569CD6' } };
-                  }
-                }
-                return { style: { display: 'block' } };
-              }}
-              codeTagProps={{
-                style: {
-                  fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-                  lineHeight: '1.5'
-                }
+                lineHeight: '1.5',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word'
               }}
             >
-              {code}
-            </SyntaxHighlighter>
+              <code
+                dangerouslySetInnerHTML={{ __html: abhayaHighlightLanguage(code) }}
+                style={{
+                  fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                  lineHeight: '1.5'
+                }}
+              />
+            </pre>
             <textarea
               className="absolute inset-0 w-full h-full resize-none font-mono"
               spellCheck={false}
@@ -420,7 +403,7 @@ export default function RunnerPage() {
                 caretWidth: '2px'
               }}
             />
-            <div className="absolute bottom-2 right-2 text-xs text-gray-500 bg-gray-800/50 px-2 py-1 rounded flex items-center gap-2">
+            <div className="absolute bottom-2 right-2 text-xs text-gray-500   px-2 py-1 rounded flex items-center gap-2">
               <span>Line {cursorPosition.line}, Column {cursorPosition.column}</span>
               {selection.start !== selection.end && (
                 <span className="text-blue-400">
@@ -472,4 +455,3 @@ export default function RunnerPage() {
     </div>
   );
 }
-
