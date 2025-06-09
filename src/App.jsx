@@ -1,8 +1,8 @@
 import React from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Home from './Pages/Home'
-import Runner from './Pages/Runner'
+import Home from './pages/Home'
+import Runner from './pages/Runner'
 import Navbar from './components/Navbar'
 import ComingSoon from './pages/ComingSoon'
 
