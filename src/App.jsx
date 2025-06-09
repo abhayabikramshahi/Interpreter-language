@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./App.css"; // include the starfield styles
+import "./App.css"; 
 
 const App = () => {
   return (
