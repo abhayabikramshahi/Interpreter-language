@@ -3,18 +3,15 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './Pages/Home'
 import Runner from './Pages/Runner'
-import Companies from './Pages/Companies'
 import Navbar from './components/Navbar'
+import ComingSoon from './pages/ComingSoon'
 
 // Layout component to wrap pages with common elements
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        {children}
-      </main>
-    </div>
+   <>
+   {children}
+   </>
   );
 };
 
@@ -22,8 +19,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes */}
-        <Route path="/" element={
+        Public routes
+        {/* <Route path="/" element={
           <Layout>
             <Home />
           </Layout>
@@ -35,14 +32,16 @@ function App() {
           </Layout>
         } />
         
-        <Route path="/companies" element={
+      
+  
+        {/* Catch all route - redirect to home */}
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */} */
+        <Route path="*" element={
           <Layout>
-            <Companies />
+            <ComingSoon />
           </Layout>
         } />
 
-        {/* Catch all route - redirect to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   )
