@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import { FaCode, FaBars, FaTimes, FaInfoCircle, FaBook, FaEnvelope } from 'react-icons/fa';
 
-// Navigation items configuration
 const navItems = [
   { path: '/', label: 'Home' },
-  { path: '/runner', label: 'Code Runner' }
+  { path: '/runner', label: 'Code Runner' },
+  { path: '/about', label: 'About' },
+  { path: '/docs', label: 'Docs' },
+  { path: '/contact', label: 'Contact' }
 ];
 
-// Header info nav items
 const infoNavItems = [
   { path: '/about', label: 'About', icon: <FaInfoCircle className="inline mr-1" /> },
   { path: '/docs', label: 'Docs', icon: <FaBook className="inline mr-1" /> },
@@ -20,7 +21,6 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -30,32 +30,30 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
   const isActive = (path) => location.pathname === path;
 
-  // Navigation link component
   const NavLink = ({ path, label, isMobile = false }) => {
     const baseClasses = isMobile
       ? 'block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200'
-      : 'text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200 relative group';
+      : 'text-white font-medium hover:text-blue-400 transition-colors duration-200 relative group';
 
     const activeClasses = isActive(path)
       ? isMobile
-        ? 'text-blue-600 bg-blue-50'
-        : 'text-blue-600'
+        ? 'text-blue-400 bg-gray-900'
+        : 'text-blue-400'
       : isMobile
-        ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+        ? 'text-white hover:text-blue-400 hover:bg-gray-900'
         : '';
 
     return (
       <Link to={path} className={`${baseClasses} ${activeClasses}`}>
         {label}
         {!isMobile && (
-          <span className={`block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-blue-600 rounded ${
+          <span className={`block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-blue-400 rounded ${
             isActive(path) ? 'max-w-full' : ''
           }`}></span>
         )}
@@ -64,9 +62,9 @@ function Navbar() {
   };
 
   return (
-    <header className="w-full z-50 sticky top-0 left-0 backdrop-blur-md bg-white/70 shadow-md">
+    <header className="w-full z-50 sticky top-0 left-0 backdrop-blur-md bg-black/90 shadow-md">
       {/* Top Info Bar */}
-      <div className="bg-blue-50/80 border-b border-blue-100 text-blue-700 text-sm py-1 px-4 flex justify-end space-x-6 backdrop-blur-md">
+      <div className="bg-gray-900 border-b border-gray-800 text-white text-sm py-1 px-4 flex justify-end space-x-6 backdrop-blur-md">
         {infoNavItems.map(({ path, label, icon }) => (
           <Link key={path} to={path} className="hover:underline flex items-center gap-1">
             {icon}{label}
@@ -74,13 +72,17 @@ function Navbar() {
         ))}
       </div>
       {/* Main Navbar */}
-      <nav className={`transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-lg' : 'bg-white/70 backdrop-blur-md'}`}> 
+      <nav className={`transition-all duration-300 ${
+        isScrolled
+          ? 'bg-black/95 backdrop-blur-lg shadow-lg'
+          : 'bg-black/80 backdrop-blur-md'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <FaCode className="h-8 w-8 text-blue-600 mr-2" />
-              <h1 className="text-gray-900 font-bold text-xl tracking-wide select-none cursor-default">
+              <FaCode className="h-8 w-8 text-blue-400 mr-2" />
+              <h1 className="text-white font-bold text-xl tracking-wide select-none cursor-default">
                 Abhaya Language
               </h1>
             </Link>
@@ -89,19 +91,14 @@ function Navbar() {
               {navItems.map(({ path, label }) => (
                 <NavLink key={path} path={path} label={label} />
               ))}
-              <Link
-                to="/runner"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-              >
-                Try Now
-              </Link>
+             
             </div>
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 type="button"
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-blue-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors duration-200"
                 aria-controls="mobile-menu"
                 aria-expanded={isOpen}
               >
@@ -119,21 +116,16 @@ function Navbar() {
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
             isOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
-          } overflow-hidden bg-white/90 shadow-lg backdrop-blur-md`}
+          } overflow-hidden bg-black/90 shadow-lg backdrop-blur-md`}
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map(({ path, label }) => (
               <NavLink key={path} path={path} label={label} isMobile />
             ))}
-            <Link
-              to="/runner"
-              className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
-            >
-              Try Now
-            </Link>
-            <div className="border-t border-gray-200 mt-2 pt-2 flex flex-col gap-2">
+            {/* Info Links */}
+            <div className="border-t border-gray-800 mt-2 pt-2 flex flex-col gap-2">
               {infoNavItems.map(({ path, label, icon }) => (
-                <Link key={path} to={path} className="flex items-center gap-1 text-blue-700 hover:underline px-3 py-1">
+                <Link key={path} to={path} className="flex items-center gap-1 text-white hover:underline px-3 py-1">
                   {icon}{label}
                 </Link>
               ))}

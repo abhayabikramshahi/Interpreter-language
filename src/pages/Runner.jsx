@@ -241,32 +241,32 @@ export default function RunnerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 max-w-full font-sans flex flex-col">
-      <header className="flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm">
+    <div className="min-h-screen bg-black p-6 max-w-full font-sans flex flex-col">
+      <header className="flex flex-col md:flex-row justify-between items-center mb-6 bg-gray-900/80 p-4 rounded-lg shadow-sm">
         <div className="flex items-center gap-4 mb-4 md:mb-0">
           <div className="flex items-center">
-            <svg className="w-8 h-8 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <h1 className="text-3xl font-bold text-gray-700 ml-2">Abhaya Runner</h1>
+            <h1 className="text-3xl font-bold text-blue-200 ml-2">Abhaya Runner</h1>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
           <div className="flex gap-2 items-center">
-            <div className="flex items-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden">
+            <div className="flex items-center bg-gray-800 rounded-md border border-gray-700 overflow-hidden">
               <input
                 type="text"
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
-                className="px-3 py-2 focus:outline-none bg-transparent"
+                className="px-3 py-2 focus:outline-none bg-transparent text-white"
                 placeholder="Filename"
               />
-              <div className="flex items-center border-l border-gray-200">
+              <div className="flex items-center border-l border-gray-700">
                 <button
                   onClick={() => setFileExtension(".abhaya")}
                   className="px-3 py-2 text-sm font-medium bg-blue-600 text-white"
@@ -304,7 +304,7 @@ export default function RunnerPage() {
             </button>
             <button
               onClick={handleClear}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0 flex items-center gap-2 transition-all duration-200 hover:shadow-lg"
+              className="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2 rounded-md font-semibold flex-grow md:flex-grow-0 flex items-center gap-2 transition-all duration-200 hover:shadow-lg"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -317,7 +317,7 @@ export default function RunnerPage() {
 
       <main className="flex flex-col md:flex-row flex-grow gap-4 md:gap-6">
         <div className="flex-1 flex flex-col">
-          <div className="bg-gray-800 text-white p-2 rounded-t-md font-medium flex justify-between items-center">
+          <div className="bg-gray-900 text-white p-2 rounded-t-md font-medium flex justify-between items-center">
             <span>Code Editor</span>
             <span className="text-xs text-gray-400">{fileName}{fileExtension}</span>
           </div>
@@ -331,7 +331,7 @@ export default function RunnerPage() {
                 borderRadius: '0 0 0.375rem 0.375rem',
                 fontSize: '0.9rem',
                 overflow: 'auto',
-                backgroundColor: '#1E1E1E',
+                backgroundColor: '#18181b',
                 color: '#D4D4D4',
                 position: 'relative',
                 zIndex: 1,
@@ -403,7 +403,7 @@ export default function RunnerPage() {
                 caretWidth: '2px'
               }}
             />
-            <div className="absolute bottom-2 right-2 text-xs text-gray-500   px-2 py-1 rounded flex items-center gap-2">
+            <div className="absolute bottom-2 right-2 text-xs text-gray-400 px-2 py-1 rounded flex items-center gap-2">
               <span>Line {cursorPosition.line}, Column {cursorPosition.column}</span>
               {selection.start !== selection.end && (
                 <span className="text-blue-400">
@@ -415,11 +415,11 @@ export default function RunnerPage() {
         </div>
 
         <div className="flex-1 flex flex-col">
-          <div className="bg-gray-800 text-white p-2 rounded-t-md font-medium">
+          <div className="bg-gray-900 text-white p-2 rounded-t-md font-medium">
             <span>Output</span>
           </div>
           <div
-            className="flex-grow bg-gray-50 border border-gray-300 rounded-b-md overflow-auto p-4 font-mono whitespace-pre-wrap min-h-[500px]"
+            className="flex-grow bg-gray-950 border border-gray-800 rounded-b-md overflow-auto p-4 font-mono whitespace-pre-wrap min-h-[500px] text-white"
             aria-label="Output"
           >
             {output.map(({ type, content }, i) => {
@@ -434,9 +434,9 @@ export default function RunnerPage() {
               } else if (type === "task") {
                 style = { color: "#2563eb" };
               } else if (type === "return") {
-                style = { color: "#047857", fontWeight: "bold" };
+                style = { color: "#22d3ee", fontWeight: "bold" };
               } else if (type === "output") {
-                style = { color: "#111827" };
+                style = { color: "#f1f5f9" };
               }
 
               return (
@@ -449,7 +449,7 @@ export default function RunnerPage() {
         </div>
       </main>
 
-      <div className="md:hidden mt-8 text-center text-gray-700 font-semibold">
+      <div className="md:hidden mt-8 text-center text-gray-400 font-semibold">
         Runner is not optimized for mobile. Please visit on a desktop for full experience.
       </div>
     </div>
