@@ -252,7 +252,7 @@ export default function RunnerPage() {
               <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <h1 className="text-3xl font-bold text-blue-800 ml-2">Abhaya Runner</h1>
+            <h1 className="text-3xl font-bold text-gray-700 ml-2">Abhaya Runner</h1>
           </div>
         </div>
 
