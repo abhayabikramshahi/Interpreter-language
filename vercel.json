@@ -2,10 +2,7 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static",
-      "config": {
-        "distDir": "dist"
-      }
+      "use": "@vercel/vite"
     }
   ],
   "rewrites": [
